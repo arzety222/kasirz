@@ -16,6 +16,7 @@ class HomeController extends Controller
         if(session('admin_id') == null){
             return redirect('');
         }
+
         return view('home');
     }
 
@@ -47,10 +48,11 @@ class HomeController extends Controller
     public function simpan(Request $request){
         $validator = Validator::make($request->all(),[
             'iproduk_id'     => 'required',
-            'iquantity'     => 'required',
+            'iquantity'     => 'required|numeric|min:1',
         ],[
             'iproduk_id.required' => "Nama Produk wajib diisi",
-            'iquantity.required'  => "Quantity wajib diisi"
+            'iquantity.required'  => "Quantity wajib diisi",
+            'iquantity.min'  => "Quantity minimal 1"
         ]);
 
         if($validator->fails()){
@@ -115,11 +117,12 @@ class HomeController extends Controller
         $validator = Validator::make($request->all(),[
             'iproduk_id'     => 'required',
             'ipenjualan_id'    => 'required',
-            'iquantity'     => 'required',
+            'iquantity'     => 'required|numeric|min:1',
         ],[
             'iproduk_id.required' => "Nama Produk wajib diisi",
             'ipenjualan_id.required' => "Penjualan wajib diisi",
-            'iquantity.required'  => "Quantity wajib diisi"
+            'iquantity.required'  => "Quantity wajib diisi",
+            'iquantity.min'  => "Quantity minimal 1"
         ]);
 
         if($validator->fails()){
@@ -172,6 +175,10 @@ class HomeController extends Controller
         if(session('admin_id') == null){
             return redirect('');
         }
+
+        if(session('role_id') != 1 ){
+            return redirect('');
+        }
         
         $role = Role::all();
 
@@ -191,6 +198,14 @@ class HomeController extends Controller
         if($validator->fails()){
             return redirect()->route('index')->with('error',  implode(" | ",$validator->errors()->all()));
         }
+
+        $cek = Admin::whereRaw('lower(username) = ?', strtolower(ltrim(rtrim($request->iusername))))
+        ->first();
+
+        if($cek){
+            return redirect()->route('form_register')->with('error',  'Username sudah ada');
+        }
+
         $create = new Admin();
         $create->role_id         = $request->irole_id;
         $create->username          = ltrim(rtrim($request->iusername));
@@ -212,17 +227,17 @@ class HomeController extends Controller
             'iusername.required' => "Username wajib diisi",
             'ipassword.required' => "Password wajib diisi"
         ]);
-
+        
         if($validator->fails()){
             return redirect()->route('login')->with('error',  implode(" | ",$validator->errors()->all()));
         }
-
+        
         $username = ltrim(rtrim($request->iusername));
 
         $admin = Admin::whereRaw('lower(username) = ?', strtolower($username))
         ->where('password', $request->ipassword)
         ->first();
-
+        
         if(!$admin){
             return redirect()->route('login')->with('error', 'Akun tidak ditemukan!');
         }
@@ -235,7 +250,7 @@ class HomeController extends Controller
 
         $admin->token       = $generateToken;
         $admin->update();
-        
+        \Log::Info("homeee");
         return redirect('home');
     }
 
@@ -266,16 +281,24 @@ class HomeController extends Controller
     public function simpan_produk(Request $request){
         $validator = Validator::make($request->all(),[
             'inamaproduk'     => 'required',
-            'iharga'    => 'required',
+            'iharga'    => 'required|numeric|min:1',
             'istok'     => 'required',
         ],[
             'inamaproduk.required' => "Nama Produk wajib diisi",
             'iharga.required' => "Harga wajib diisi",
+            'iharga.min' => "Harga minimal 1",
             'istok.required'  => "Stok wajib diisi"
         ]);
 
         if($validator->fails()){
             return redirect()->route('form_add_produk')->with('error',  implode(" | ",$validator->errors()->all()));
+        }
+
+        $cek = Produk::whereRaw('lower(nama_produk) = ?', strtolower(ltrim(rtrim($request->inamaproduk))))
+        ->first();
+
+        if($cek){
+            return redirect()->route('form_add_produk')->with('error',  'Nama Produk sudah ada');
         }
 
         $create = new Produk();
@@ -297,11 +320,12 @@ class HomeController extends Controller
     public function rubah_produk(Request $request){
         $validator = Validator::make($request->all(),[
             'inamaproduk'     => 'required',
-            'iharga'    => 'required',
+            'iharga'    => 'required|numeric|min:1',
             'istok'     => 'required',
         ],[
             'inamaproduk.required' => "Nama Produk wajib diisi",
             'iharga.required' => "Harga wajib diisi",
+            'iharga.min' => "Harga minimal 1",
             'istok.required'  => "Stok wajib diisi"
         ]);
 
@@ -313,6 +337,14 @@ class HomeController extends Controller
 
         if(!$produk){
             return redirect()->back()->with('error', 'Produk tidak ditemukan');
+        }
+
+        $cek = Produk::whereRaw('lower(nama_produk) = ?', strtolower(ltrim(rtrim($request->inamaproduk))))
+        ->where('produk_id', '!=', $request->iproduk_id)
+        ->first();
+
+        if($cek){
+            return redirect()->back()->with('error', 'Nama Produk sudah ada');
         }
 
         $produk->nama_produk = $request->inamaproduk;

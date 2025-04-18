@@ -47,9 +47,12 @@
                         <!-- MENU KIRI -->
                         <p>Menu</p>
                         <ul>
-                            <li>
-                                <a href="{{ url('register') }}">Register Admin</a>
-                            </li>
+                            @if(session('role_id') == 1)
+                                <li>
+                                    <a href="{{ url('register') }}">Register Admin</a>
+                                </li>
+                            @endif
+                            
                             <li>
                                 <a href="{{ url('list_produk') }}">Produk</a>
                             </li>

@@ -21,7 +21,7 @@ Route::post('/update', [HomeController::class, 'rubah']);
 Route::get('/delete/{id}', [HomeController::class, 'hapus']);
 
 // menu admin
-Route::get('register', [HomeController::class, 'form_register']);
+Route::get('register', [HomeController::class, 'form_register'])->name('form_register');
 Route::post('/insert_register', [HomeController::class, 'simpan_register']);
 
 // menu produk

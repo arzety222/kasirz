@@ -13,7 +13,7 @@
                 {{ session('error') }}
             </div>
         @endif
-
+        <br>
         <form action="{{ url('/insert') }}" method="POST">
             @csrf
 

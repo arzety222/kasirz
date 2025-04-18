@@ -19,7 +19,7 @@
                     {{ session('error') }}
                 </div>
             @endif
-
+            <br>
             <form action="{{ url('/proses_login') }}" method="POST">
                 @csrf
 

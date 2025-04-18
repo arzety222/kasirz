@@ -14,6 +14,7 @@
                     {{ session('error') }}
                 </div>
             @endif
+            <br>
             <p><a href="{{ url('add_produk') }}">Tambah</a></p>
             <br>
             <table style="background-color:#fff">
