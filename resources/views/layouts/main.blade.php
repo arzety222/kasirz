@@ -18,7 +18,7 @@
         }
         .kiri {
             border:none;
-            background-color: #DCF8F1;
+            background-color:rgb(246, 248, 220);
             padding: 20px;
             margin: 20px;
             width: 150px;
@@ -26,7 +26,7 @@
 
         .kanan {
             border:none;
-            background-color: #B2F7E6;
+            background-color:rgb(226, 203, 140);
             padding: 20px;
             margin: 20px;
             width: 850px;
@@ -34,7 +34,7 @@
     </style>
 
     <!-- <body style="background: #fff;"> -->
-    <body style="background-image: url('{{asset('alam.jpg')}}')">
+    <body style="background-image: url('{{asset('furniture_rumah_minimalis.webp')}}')">
         
         <div class="main-form-container">
             
