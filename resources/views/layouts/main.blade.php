@@ -33,7 +33,8 @@
         }
     </style>
 
-    <body style="background: #fff;">
+    <!-- <body style="background: #fff;"> -->
+    <body style="background-image: url('{{asset('alam.jpg')}}')">
         
         <div class="main-form-container">
             

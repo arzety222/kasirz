@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="{{ asset('style.css') }}">
     </head>
 
-    <body>
+    <body style="background-image: url('{{asset('alam.jpg')}}')">
         <div class="form-container">
                 
             <h1>LOGIN KASIRZ</h1>
