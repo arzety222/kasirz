@@ -34,6 +34,7 @@
                         <td>{{ number_format($r->stok, 0, ",", ".") }}</td>
                         <td><a href="{{ url('edit_produk') }}/{{ $r->produk_id }}">Edit</a> - <a onclick="return confirmDelete()" href="{{ url('delete_produk') }}/{{ $r->produk_id}}">Delete</a></td>
                     </tr>
+                    
                     <?php $no++ ?>
                 @endforeach
                 
